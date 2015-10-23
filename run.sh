@@ -7,6 +7,10 @@ SHARE_FOLDER="$HOME/coreos-kubernetes/multi-node/vagrant/docker/"
 PET_HOME="$HOME/product-mss/samples/petstore/microservices/pet"
 FILESERVER_HOME="$HOME/product-mss/samples/petstore/microservices/fileserver"
 REDIS_HOME="$HOME/product-mss/samples/petstore/microservices/redis"
+FRONTEND_ADMIN="$HOME/product-mss/samples/petstore/microservices/frontend-admin"
+FRONTEND_USER="$HOME/product-mss/samples/petstore/microservices/frontend-user"
+SECURITY="$HOME/product-mss/samples/petstore/microservices/security"
+TRANSACTION="$HOME/product-mss/samples/petstore/microservices/transaction"
 
 
 PRE_RELEASE="Y"
@@ -42,27 +46,67 @@ fi
 echo "--------------------------------------------------------------"
 echo "Building petstore sample"
 echo "--------------------------------------------------------------"
-cd $HOME/product-mss/samples/petstore/
+cd $HOME/product-mss/
 mvn clean install
 
+#hack build frondend admin
+cd $HOME/product-mss/samples/petstore/microservices/frontend-admin/
+mvn clean install
+
+
+mkdir -p $HOME/coreos-kubernetes/multi-node/vagrant/docker
 # copy Pet
 echo "--------------------------------------------------------------"
 echo "Copy Pet"
 echo "--------------------------------------------------------------"
-[ ! -d $SHARE_FOLDER/pet ] && mkdir -P $SHARE_FOLDER/pet
+[ ! -d $SHARE_FOLDER/pet ] && mkdir -p $SHARE_FOLDER/pet
 cp -fr $PET_HOME/container/docker $SHARE_FOLDER/pet
 [ ! -d $SHARE_FOLDER/pet/docker/packages ] && mkdir -p $SHARE_FOLDER/pet/docker/packages
 cp -f $PET_HOME/target/petstore-pet-1.0.0${RELEASE}.jar $SHARE_FOLDER/pet/docker/packages/
-cp -f $HOME/jdk-8u60-linux-x64.gz $SHARE_FOLDER/pet/docker/packages/
+#cp -f $HOME/jdk-8u60-linux-x64.gz $SHARE_FOLDER/pet/docker/packages/
 
 
 echo "--------------------------------------------------------------"
 echo "Copy FileServer"
 echo "--------------------------------------------------------------"
-[ ! -d $SHARE_FOLDER/fileserver ] && mkdir -P $SHARE_FOLDER/fileserver
+[ ! -d $SHARE_FOLDER/fileserver ] && mkdir -p $SHARE_FOLDER/fileserver
 cp -fr $FILESERVER_HOME/container/docker $SHARE_FOLDER/fileserver/
 
 
+echo "--------------------------------------------------------------"
+echo "Copy FrontEnd Admin"
+echo "--------------------------------------------------------------"
+[ ! -d $SHARE_FOLDER/frontend_admin ] && mkdir -p $SHARE_FOLDER/frontend_admin
+cp -fr $FRONTEND_ADMIN/container/docker $SHARE_FOLDER/frontend_admin
+[ ! -d $SHARE_FOLDER/frontend_admin/docker/packages ] && mkdir -p $SHARE_FOLDER/frontend_admin/docker/packages
+cp -f $FRONTEND_ADMIN/target/petstore-admin.war $SHARE_FOLDER/frontend_admin/docker/packages/
+
+
+echo "--------------------------------------------------------------"
+echo "Copy FrontEnd User"
+echo "--------------------------------------------------------------"
+[ ! -d $SHARE_FOLDER/frontend_user ] && mkdir -p $SHARE_FOLDER/frontend_user
+cp -fr $FRONTEND_USER/container/docker $SHARE_FOLDER/frontend_user
+[ ! -d $SHARE_FOLDER/frontend_user/docker/packages ] && mkdir -p $SHARE_FOLDER/frontend_user/docker/packages
+cp -f $FRONTEND_USER/target/store.war $SHARE_FOLDER/frontend_user/docker/packages/
+
+
+echo "--------------------------------------------------------------"
+echo "Copy Security"
+echo "--------------------------------------------------------------"
+[ ! -d $SHARE_FOLDER/security ] && mkdir -p $SHARE_FOLDER/security
+cp -fr $SECURITY/container/docker $SHARE_FOLDER/security
+[ ! -d $SHARE_FOLDER/security/docker/packages ] && mkdir -p $SHARE_FOLDER/security/docker/packages
+cp -f $SECURITY/target/petstore-security-1.0.0-SNAPSHOT.jar $SHARE_FOLDER/security/docker/packages/
+
+
+echo "--------------------------------------------------------------"
+echo "Copy Transaction"
+echo "--------------------------------------------------------------"
+[ ! -d $SHARE_FOLDER/transaction ] && mkdir -p $SHARE_FOLDER/transaction
+cp -fr $TRANSACTION/container/docker $SHARE_FOLDER/transaction
+[ ! -d $SHARE_FOLDER/transaction/docker/packages ] && mkdir -p $SHARE_FOLDER/transaction/docker/packages
+cp -f $TRANSACTION/target/petstore-txn-1.0.0-SNAPSHOT.jar $SHARE_FOLDER/transaction/docker/packages/
 
 echo "--------------------------------------------------------------"
 echo "Cleaning up old docker files"
@@ -84,13 +128,25 @@ if [ ! -f /usr/local/bin/kubectl ];then
     fi
     chmod +x kubectl
     mv kubectl /usr/local/bin/kubectl
-    cp -a $HOME/bootstrap.sh $VAGRANT_HOME  
 fi
+cp -f $HOME/bootstrap.sh $VAGRANT_HOME  
 cd $VAGRANT_HOME
 vagrant up
 ./kubctl-setup.sh
 
 # TODO check k8s api endpoint
+
+echo -n "Waiting for API  "
+while [ 1 ]
+    do
+    sleep 1
+    if kubectl get nodes >/dev/null 2>&1
+    then
+        break
+    fi
+    done
+echo -e "\e[32mOK\e[39m"
+
 kubectl get nodes
 
 
@@ -125,4 +181,30 @@ kubectl label nodes 172.17.4.201 disktype=ssd
 cd $FILESERVER_HOME/container/kubernetes/
 kubectl create -f .
 
+
+echo "--------------------------------------------------------------"
+echo "Deploying FrontEnd Admin"
+echo "--------------------------------------------------------------"
+cd $FRONTEND_ADMIN/container/kubernetes/
+kubectl create -f .
+
+echo "--------------------------------------------------------------"
+echo "Deploying FrontEnd User"
+echo "--------------------------------------------------------------"
+cd $FRONTEND_USER/container/kubernetes/
+kubectl create -f .
+
+
+echo "--------------------------------------------------------------"
+echo "Deploying Security"
+echo "--------------------------------------------------------------"
+cd $SECURITY/container/kubernetes/
+kubectl create -f .
+
+
+echo "--------------------------------------------------------------"
+echo "Deploying Transaction"
+echo "--------------------------------------------------------------"
+cd $TRANSACTION/container/kubernetes/
+kubectl create -f .
 

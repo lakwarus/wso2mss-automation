@@ -3,6 +3,10 @@
 HOME="/vagrant"
 PET=$HOME/pet/docker
 FILESERVER=$HOME/fileserver/docker
+FRONTEND_ADMIN=$HOME/frontend_admin/docker
+FRONTEND_USER=$HOME/frontend_user/docker
+SECURITY=$HOME/transaction/docker
+TRANSACTION=$HOME/security/docker
 
 
 # creating fileserver folder
@@ -19,16 +23,16 @@ else
     docker pull kubernetes/redis:v1
 fi
 
-echo "------------------------------------------------------------------"
-echo " load / pull ubuntu:14.04"
-echo "------------------------------------------------------------------"
+#echo "------------------------------------------------------------------"
+#echo " load / pull ubuntu:14.04"
+#echo "------------------------------------------------------------------"
 
-if [ -f $HOME/ubuntu.tgz ];then
-    cd $HOME
-    docker load < ubuntu.tgz
-else
-    docker pull ubuntu:14.04 
-fi
+#if [ -f $HOME/ubuntu.tgz ];then
+#    cd $HOME
+#    docker load < ubuntu.tgz
+#else
+#    docker pull ubuntu:14.04 
+#fi
 
 echo "------------------------------------------------------------------"
 echo " load / pull php:5.6-apache"
@@ -43,35 +47,119 @@ fi
 
 
 echo "------------------------------------------------------------------"
+echo " load / pull java:8-jre"
+echo "------------------------------------------------------------------"
+
+if [ -f $HOME/java.tgz ];then
+    cd $HOME
+    docker load < java.tgz
+else
+    docker pull java:8-jre
+fi
+
+
+echo "------------------------------------------------------------------"
+echo " load / pull tomcat:8.0"
+echo "------------------------------------------------------------------"
+
+if [ -f $HOME/tomcat.tgz ];then
+    cd $HOME
+    docker load < tomcat.tgz
+else
+    docker pull tomcat:8.0
+fi
+
+
+echo "------------------------------------------------------------------"
 echo "building / load pet docker"
 echo "------------------------------------------------------------------"
 
-if [ ! -f $HOME/pet.tgz ];then
-    cd $PET
-    docker build -t wso2mss/petstore-pet .
-    #sleep 5
-    #docker save wso2mss/petstore-pet > pet.tgz
-    #mv pet.tgz $HOME/
-    #cd $PET/ssh
-    #docker build -t wso2mss/ssh .
-else
-    cd $HOME
-    echo ">>>>>>>>>>>>>>>>> LOADING"
-    docker load < pet.tgz
+cd $PET
+docker build -t wso2mss/petstore-pet .
+sleep 3
+if docker images |grep wso2mss/petstore-pet >/dev/null 2>&1
+    then
+        echo "wso2mss/petstore-pet image build success!!"
+    else
+        echo "wso2mss/petstore-pet building again........."
+        cd $PET
+        docker build -t wso2mss/petstore-pet .
 fi
 
 
 echo "------------------------------------------------------------------"
 echo "building fileserver docker"
 echo "------------------------------------------------------------------"
-if [ ! -f $HOME/fileserver.tgz ];then
-    cd $FILESERVER
-    docker build -t wso2mss/petstore-fileserver .
-    #sleep 1
-    #docker save wso2mss/petstore-fileserver > fileserver.tgz
-    #mv fileserver.tgz $HOME/
-else
-    cd $HOME
-    docker load < fileserver.tgz
+cd $FILESERVER
+docker build -t wso2mss/petstore-fileserver .
+
+if docker images |grep wso2mss/petstore-fileserver >/dev/null 2>&1
+    then
+        echo "wso2mss/petstore-fileserver image build success!!"
+    else
+        cd $FILESERVER
+        docker build -t wso2mss/petstore-fileserver .
 fi
+
+
+echo "------------------------------------------------------------------"
+echo "building FrontEnd Admin"
+echo "------------------------------------------------------------------"
+cd $FRONTEND_ADMIN
+docker build -t wso2mss/petstore-admin-fe .
+
+if docker images |grep wso2mss/petstore-admin-fe >/dev/null 2>&1
+    then
+        echo "wso2mss/petstore-admin-fe image build success!!"
+    else
+        cd $FRONTEND_ADMIN
+        docker build -t wso2mss/petstore-admin-fe .
+fi
+
+
+echo "------------------------------------------------------------------"
+echo "building FrontEnd User"
+echo "------------------------------------------------------------------"
+cd $FRONTEND_USER
+docker build -t wso2mss/petstore-store-fe .
+
+if docker images |grep wso2mss/petstore-store-fe >/dev/null 2>&1
+    then
+        echo "wso2mss/petstore-store-fe image build success!!"
+    else
+        cd $FRONTEND_USER
+        docker build -t wso2mss/petstore-store-fe .
+fi
+
+
+echo "------------------------------------------------------------------"
+echo "building Security"
+echo "------------------------------------------------------------------"
+cd $SECURITY
+docker build -t wso2mss/petstore-security .
+
+if docker images |grep wso2mss/petstore-security >/dev/null 2>&1
+    then
+        echo "wso2mss/petstore-security image build success!!"
+    else
+        cd $SECURITY
+        docker build -t wso2mss/petstore-security .
+fi
+
+
+echo "------------------------------------------------------------------"
+echo "building Transaction"
+echo "------------------------------------------------------------------"
+cd $TRANSACTION
+docker build -t wso2mss/petstore-txn .
+
+if docker images |grep wso2mss/petstore-txn >/dev/null 2>&1
+    then
+        echo "wso2mss/petstore-txn image build success!!"
+    else
+        cd $TRANSACTION
+        docker build -t wso2mss/petstore-txn .
+fi
+
+
 
