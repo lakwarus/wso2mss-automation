@@ -23,16 +23,16 @@ else
     docker pull kubernetes/redis:v1
 fi
 
-#echo "------------------------------------------------------------------"
-#echo " load / pull ubuntu:14.04"
-#echo "------------------------------------------------------------------"
+echo "------------------------------------------------------------------"
+echo " load / pull ubuntu:14.04"
+echo "------------------------------------------------------------------"
 
-#if [ -f $HOME/ubuntu.tgz ];then
-#    cd $HOME
-#    docker load < ubuntu.tgz
-#else
-#    docker pull ubuntu:14.04 
-#fi
+if [ -f $HOME/ubuntu.tgz ];then
+    cd $HOME
+    docker load < ubuntu.tgz
+else
+    docker pull ubuntu:14.04 
+fi
 
 echo "------------------------------------------------------------------"
 echo " load / pull php:5.6-apache"

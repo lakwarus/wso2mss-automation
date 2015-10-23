@@ -63,7 +63,7 @@ echo "--------------------------------------------------------------"
 cp -fr $PET_HOME/container/docker $SHARE_FOLDER/pet
 [ ! -d $SHARE_FOLDER/pet/docker/packages ] && mkdir -p $SHARE_FOLDER/pet/docker/packages
 cp -f $PET_HOME/target/petstore-pet-1.0.0${RELEASE}.jar $SHARE_FOLDER/pet/docker/packages/
-#cp -f $HOME/jdk-8u60-linux-x64.gz $SHARE_FOLDER/pet/docker/packages/
+cp -f $HOME/jdk-8u60-linux-x64.gz $SHARE_FOLDER/pet/docker/packages/
 
 
 echo "--------------------------------------------------------------"
