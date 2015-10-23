@@ -59,14 +59,14 @@ fi
 
 
 echo "------------------------------------------------------------------"
-echo " load / pull tomcat:8.0"
+echo " load / pull tomcat:8.0.28-jre8"
 echo "------------------------------------------------------------------"
 
 if [ -f $HOME/tomcat.tgz ];then
     cd $HOME
     docker load < tomcat.tgz
 else
-    docker pull tomcat:8.0
+    docker pull tomcat:8.0.28-jre8
 fi
 
 
