@@ -50,8 +50,8 @@ cd $HOME/product-mss/
 mvn clean install
 
 #hack build frondend admin
-cd $HOME/product-mss/samples/petstore/microservices/frontend-admin/
-mvn clean install
+#cd $HOME/product-mss/samples/petstore/microservices/frontend-admin/
+#mvn clean install
 
 
 mkdir -p $HOME/coreos-kubernetes/multi-node/vagrant/docker
