@@ -5,8 +5,8 @@ PET=$HOME/pet/docker
 FILESERVER=$HOME/fileserver/docker
 FRONTEND_ADMIN=$HOME/frontend_admin/docker
 FRONTEND_USER=$HOME/frontend_user/docker
-SECURITY=$HOME/transaction/docker
-TRANSACTION=$HOME/security/docker
+SECURITY=$HOME/security/docker
+TRANSACTION=$HOME/transaction/docker
 
 
 # creating fileserver folder
