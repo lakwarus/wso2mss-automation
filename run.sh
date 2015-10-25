@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# run.sh usage 
+# run.sh ALL (Default)
+# run.sh PET REDIS SECURITY FRONTEND-ADMIN FRONTEND-USER SECURITY TRANSACTION FILESERVER
+
+
 PRE_REQ=1
 HOME=`pwd`
 VAGRANT_HOME="$HOME/coreos-kubernetes/multi-node/vagrant/"
@@ -48,11 +53,6 @@ echo "Building petstore sample"
 echo "--------------------------------------------------------------"
 cd $HOME/product-mss/
 mvn clean install
-
-#hack build frondend admin
-#cd $HOME/product-mss/samples/petstore/microservices/frontend-admin/
-#mvn clean install
-
 
 mkdir -p $HOME/coreos-kubernetes/multi-node/vagrant/docker
 # copy Pet
