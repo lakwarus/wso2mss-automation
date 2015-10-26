@@ -43,7 +43,6 @@ echo "--------------------------------------------------------------"
 cd $HOME/product-mss/
 mvn clean install
 
-mkdir -p $HOME/coreos-kubernetes/multi-node/vagrant/docker
 # copy Pet
 echo "--------------------------------------------------------------"
 echo "Copy Pet"
