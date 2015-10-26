@@ -4,19 +4,8 @@
 # run.sh ALL (Default)
 # run.sh PET REDIS SECURITY FRONTEND-ADMIN FRONTEND-USER SECURITY TRANSACTION FILESERVER
 
-
-PRE_REQ=1
-HOME=`pwd`
-VAGRANT_HOME="$HOME/kubernetes-vagrant-coreos-cluster"
-SHARE_FOLDER="$VAGRANT_HOME/docker/"
-PET_HOME="$HOME/product-mss/samples/petstore/microservices/pet"
-FILESERVER_HOME="$HOME/product-mss/samples/petstore/microservices/fileserver"
-REDIS_HOME="$HOME/product-mss/samples/petstore/microservices/redis"
-FRONTEND_ADMIN="$HOME/product-mss/samples/petstore/microservices/frontend-admin"
-FRONTEND_USER="$HOME/product-mss/samples/petstore/microservices/frontend-user"
-SECURITY="$HOME/product-mss/samples/petstore/microservices/security"
-TRANSACTION="$HOME/product-mss/samples/petstore/microservices/transaction"
-
+# exporting paths
+source path.sh
 
 PRE_RELEASE="Y"
 if [ $PRE_RELEASE == "Y" ];then
@@ -135,62 +124,6 @@ NODE_MEM=1024 NODE_CPUS=2 NODES=2 USE_KUBE_UI=true vagrant up
 
 kubectl get nodes
 
-
-echo "--------------------------------------------------------------"
-echo "Deploying Redis Cluster"
-echo "--------------------------------------------------------------"
-
-cd $REDIS_HOME/container/kubernetes/
-kubectl create -f redis-master.yaml
-sleep 10
-kubectl create -f redis-sentinel-service.yaml
-kubectl create -f redis-controller.yaml
-kubectl create -f redis-sentinel-controller.yaml
-kubectl scale rc redis --replicas=3
-kubectl scale rc redis-sentinel --replicas=3
-sleep 10
-kubectl delete pods redis-master
-
-
-echo "--------------------------------------------------------------"
-echo "Deploying Pet"
-echo "--------------------------------------------------------------"
-
-cd $PET_HOME/container/kubernetes/
-kubectl create -f .
-
-
-echo "--------------------------------------------------------------"
-echo "Deploying FileServer"
-echo "--------------------------------------------------------------"
-kubectl label nodes 172.17.4.201 disktype=ssd
-cd $FILESERVER_HOME/container/kubernetes/
-kubectl create -f .
-
-
-echo "--------------------------------------------------------------"
-echo "Deploying FrontEnd Admin"
-echo "--------------------------------------------------------------"
-cd $FRONTEND_ADMIN/container/kubernetes/
-kubectl create -f .
-
-echo "--------------------------------------------------------------"
-echo "Deploying FrontEnd User"
-echo "--------------------------------------------------------------"
-cd $FRONTEND_USER/container/kubernetes/
-kubectl create -f .
-
-
-echo "--------------------------------------------------------------"
-echo "Deploying Security"
-echo "--------------------------------------------------------------"
-cd $SECURITY/container/kubernetes/
-kubectl create -f .
-
-
-echo "--------------------------------------------------------------"
-echo "Deploying Transaction"
-echo "--------------------------------------------------------------"
-cd $TRANSACTION/container/kubernetes/
-kubectl create -f .
-
+cd $HOME
+# deploying petstore
+./petstore.sh

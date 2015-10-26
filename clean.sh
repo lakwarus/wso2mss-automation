@@ -1,16 +1,7 @@
 #!/bin/bash
 
-HOME=`pwd`
-VAGRANT_HOME="$HOME/coreos-kubernetes/multi-node/vagrant/"
-SHARE_FOLDER="$HOME/coreos-kubernetes/multi-node/vagrant/docker/"
-PET_HOME="$HOME/product-mss/samples/petstore/microservices/pet"
-FILESERVER_HOME="$HOME/product-mss/samples/petstore/microservices/fileserver"
-REDIS_HOME="$HOME/product-mss/samples/petstore/microservices/redis"
-FRONTEND_ADMIN="$HOME/product-mss/samples/petstore/microservices/frontend-admin"
-FRONTEND_USER="$HOME/product-mss/samples/petstore/microservices/frontend-user"
-SECURITY="$HOME/product-mss/samples/petstore/microservices/security"
-TRANSACTION="$HOME/product-mss/samples/petstore/microservices/transaction"
-
+# exporting paths
+source path.sh
 
 echo "--------------------------------------------------------------"
 echo "Delete Redis Cluster"
