@@ -39,7 +39,7 @@ kubectl create -f .
 echo "--------------------------------------------------------------"
 echo "Deploying FileServer"
 echo "--------------------------------------------------------------"
-kubectl label nodes 172.17.4.201 disktype=ssd
+kubectl label nodes 172.17.8.102 disktype=ssd
 cd $FILESERVER_HOME/container/kubernetes/
 kubectl create -f .
 

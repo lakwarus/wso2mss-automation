@@ -7,8 +7,8 @@
 
 PRE_REQ=1
 HOME=`pwd`
-VAGRANT_HOME="$HOME/coreos-kubernetes/multi-node/vagrant/"
-SHARE_FOLDER="$HOME/coreos-kubernetes/multi-node/vagrant/docker/"
+VAGRANT_HOME="$HOME/kubernetes-vagrant-coreos-cluster"
+SHARE_FOLDER="$VAGRANT_HOME/docker/"
 PET_HOME="$HOME/product-mss/samples/petstore/microservices/pet"
 FILESERVER_HOME="$HOME/product-mss/samples/petstore/microservices/fileserver"
 REDIS_HOME="$HOME/product-mss/samples/petstore/microservices/redis"
@@ -129,23 +129,9 @@ if [ ! -f /usr/local/bin/kubectl ];then
     chmod +x kubectl
     mv kubectl /usr/local/bin/kubectl
 fi
-cp -f $HOME/bootstrap.sh $VAGRANT_HOME  
+cp -f $HOME/bootstrap.sh $VAGRANT_HOME/docker/  
 cd $VAGRANT_HOME
-vagrant up
-./kubctl-setup.sh
-
-# TODO check k8s api endpoint
-
-echo -n "Waiting for API  "
-while [ 1 ]
-    do
-    sleep 1
-    if kubectl get nodes >/dev/null 2>&1
-    then
-        break
-    fi
-    done
-echo -e "\e[32mOK\e[39m"
+NODE_MEM=1024 NODE_CPUS=2 NODES=2 USE_KUBE_UI=true vagrant up
 
 kubectl get nodes
 
