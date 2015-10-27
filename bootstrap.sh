@@ -11,6 +11,7 @@ TRANSACTION=$HOME/transaction/docker
 
 # creating fileserver folder
 mkdir /home/core/fileserver
+chmod -R 777 /home/core/fileserver
 
 echo "------------------------------------------------------------------"
 echo " load / pull kubernetes/redis:v1"
@@ -21,6 +22,8 @@ if [ -f $HOME/redis.tgz ];then
     docker load < redis.tgz
 else
     docker pull kubernetes/redis:v1
+    sleep 2
+    docker save > $HOME/redis.tgz
 fi
 
 echo "------------------------------------------------------------------"
@@ -43,6 +46,8 @@ if [ -f $HOME/php.tgz ];then
     docker load < php.tgz
 else
     docker pull php:5.6-apache 
+    sleep 2
+    docker save php:5.6-apache > $HOME/php.tgz
 fi
 
 
@@ -55,6 +60,8 @@ if [ -f $HOME/java.tgz ];then
     docker load < java.tgz
 else
     docker pull java:8-jre
+    sleep 2
+    docker save > $HOME/java.tgz
 fi
 
 
@@ -67,6 +74,8 @@ if [ -f $HOME/tomcat.tgz ];then
     docker load < tomcat.tgz
 else
     docker pull tomcat:8.0.28-jre8
+    sleep 2
+    docker save tomcat:8.0.28-jre8 > $HOME/tomcat.tgz
 fi
 
 
