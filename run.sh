@@ -119,7 +119,7 @@ if [ ! -f /usr/local/bin/kubectl ];then
 fi
 cp -f $HOME/bootstrap.sh $VAGRANT_HOME/docker/  
 cd $VAGRANT_HOME
-NODE_MEM=1024 NODE_CPUS=2 NODES=2 USE_KUBE_UI=true vagrant up
+NODE_MEM=2048 NODE_CPUS=2 NODES=2 USE_KUBE_UI=true vagrant up
 
 kubectl get nodes
 

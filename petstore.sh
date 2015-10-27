@@ -12,6 +12,7 @@ kubectl create -f $VAGRANT_HOME/plugins/dns/dns-service.yaml
 kubectl create -f $VAGRANT_HOME/plugins/dns/dns-controller.yaml
 kubectl create -f $VAGRANT_HOME/plugins/kube-ui/kube-ui-controller.yaml
 kubectl create -f $VAGRANT_HOME/plugins/kube-ui/kube-ui-service.yaml
+sleep 20
 
 
 echo "--------------------------------------------------------------"
@@ -20,15 +21,18 @@ echo "--------------------------------------------------------------"
 
 cd $REDIS_HOME/container/kubernetes/
 kubectl create -f redis-master.yaml
-sleep 10
+sleep 30
 kubectl create -f redis-sentinel-service.yaml
 kubectl create -f redis-controller.yaml
 kubectl create -f redis-sentinel-controller.yaml
 kubectl scale rc redis --replicas=3
+sleep 30
 kubectl scale rc redis-sentinel --replicas=3
-sleep 10
+sleep 30
 kubectl delete pods redis-master
 
+
+sleep 20
 
 echo "--------------------------------------------------------------"
 echo "Deploying Pet"
