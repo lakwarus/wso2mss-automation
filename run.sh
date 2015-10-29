@@ -1,18 +1,8 @@
 #!/bin/bash
 
-# run.sh usage 
-# run.sh ALL (Default)
-# run.sh PET REDIS SECURITY FRONTEND-ADMIN FRONTEND-USER SECURITY TRANSACTION FILESERVER
-
 # exporting paths
 source path.sh
 
-PRE_RELEASE="Y"
-if [ $PRE_RELEASE == "Y" ];then
-    RELEASE="-SNAPSHOT"
-else
-    RELEASE=""
-fi
 # Checking prerequisites for the build
 command -v docker >/dev/null 2>&1 || { echo >&2 "Missing Docker!!! Build required docker install in the host. Try 'curl -sSL https://get.docker.com/ | sh' "; $PRE_REQ=1; }
 
@@ -50,8 +40,8 @@ echo "--------------------------------------------------------------"
 [ ! -d $SHARE_FOLDER/pet ] && mkdir -p $SHARE_FOLDER/pet
 cp -fr $PET_HOME/container/docker $SHARE_FOLDER/pet
 [ ! -d $SHARE_FOLDER/pet/docker/packages ] && mkdir -p $SHARE_FOLDER/pet/docker/packages
-cp -f $PET_HOME/target/petstore-pet-1.0.0${RELEASE}.jar $SHARE_FOLDER/pet/docker/packages/
-cp -f $HOME/jdk-8u60-linux-x64.gz $SHARE_FOLDER/pet/docker/packages/
+cp -f $PET_HOME/target/petstore-pet-*.jar $SHARE_FOLDER/pet/docker/packages/petstore-pet.jar
+#cp -f $HOME/jdk-8u60-linux-x64.gz $SHARE_FOLDER/pet/docker/packages/
 
 
 echo "--------------------------------------------------------------"
@@ -64,10 +54,27 @@ cp -fr $FILESERVER_HOME/container/docker $SHARE_FOLDER/fileserver/
 echo "--------------------------------------------------------------"
 echo "Copy FrontEnd Admin"
 echo "--------------------------------------------------------------"
-[ ! -d $SHARE_FOLDER/frontend_admin ] && mkdir -p $SHARE_FOLDER/frontend_admin
-cp -fr $FRONTEND_ADMIN/container/docker $SHARE_FOLDER/frontend_admin
-[ ! -d $SHARE_FOLDER/frontend_admin/docker/packages ] && mkdir -p $SHARE_FOLDER/frontend_admin/docker/packages
-cp -f $FRONTEND_ADMIN/target/petstore-admin.war $SHARE_FOLDER/frontend_admin/docker/packages/
+cd $HOME
+ get latest from git
+if [ ! -d petstore-admin-fe ];then
+   echo "--------------------------------------------------------------"
+   echo "Clone source code from https://github.com/lakwarus/petstore-admin-fe.git"
+   echo "--------------------------------------------------------------"
+   git clone https://github.com/lakwarus/petstore-admin-fe.git
+else
+    echo "-------------------------------------------------------------------"
+    echo "Fetching new updates from https://github.com/lakwarus/petstore-admin-fe.git"
+    echo "-------------------------------------------------------------------"
+    cd petstore-admin-fe
+    git pull
+fi
+
+cp -fr petstore-admin-fe $SHARE_FOLDER/frontend_admin
+
+#[ ! -d $SHARE_FOLDER/frontend_admin ] && mkdir -p $SHARE_FOLDER/frontend_admin
+#cp -fr $FRONTEND_ADMIN/container/docker $SHARE_FOLDER/frontend_admin
+#[ ! -d $SHARE_FOLDER/frontend_admin/docker/packages ] && mkdir -p $SHARE_FOLDER/frontend_admin/docker/packages
+#cp -f $FRONTEND_ADMIN/target/petstore-admin.war $SHARE_FOLDER/frontend_admin/docker/packages/
 
 
 echo "--------------------------------------------------------------"
@@ -85,7 +92,7 @@ echo "--------------------------------------------------------------"
 [ ! -d $SHARE_FOLDER/security ] && mkdir -p $SHARE_FOLDER/security
 cp -fr $SECURITY/container/docker $SHARE_FOLDER/security
 [ ! -d $SHARE_FOLDER/security/docker/packages ] && mkdir -p $SHARE_FOLDER/security/docker/packages
-cp -f $SECURITY/target/petstore-security-1.0.0-SNAPSHOT.jar $SHARE_FOLDER/security/docker/packages/
+cp -f $SECURITY/target/petstore-security-*.jar $SHARE_FOLDER/security/docker/packages/petstore-security.jar
 
 
 echo "--------------------------------------------------------------"
@@ -94,7 +101,7 @@ echo "--------------------------------------------------------------"
 [ ! -d $SHARE_FOLDER/transaction ] && mkdir -p $SHARE_FOLDER/transaction
 cp -fr $TRANSACTION/container/docker $SHARE_FOLDER/transaction
 [ ! -d $SHARE_FOLDER/transaction/docker/packages ] && mkdir -p $SHARE_FOLDER/transaction/docker/packages
-cp -f $TRANSACTION/target/petstore-txn-1.0.0-SNAPSHOT.jar $SHARE_FOLDER/transaction/docker/packages/
+cp -f $TRANSACTION/target/petstore-txn-*.jar $SHARE_FOLDER/transaction/docker/packages/petstore-txn.jar
 
 echo "--------------------------------------------------------------"
 echo "Cleaning up old docker files"

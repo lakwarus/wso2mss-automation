@@ -3,7 +3,7 @@
 HOME="/vagrant"
 PET=$HOME/pet/docker
 FILESERVER=$HOME/fileserver/docker
-FRONTEND_ADMIN=$HOME/frontend_admin/docker
+FRONTEND_ADMIN=$HOME/frontend_admin/
 FRONTEND_USER=$HOME/frontend_user/docker
 SECURITY=$HOME/security/docker
 TRANSACTION=$HOME/transaction/docker
@@ -23,19 +23,21 @@ if [ -f $HOME/redis.tgz ];then
 else
     docker pull kubernetes/redis:v1
     sleep 2
-    docker save > $HOME/redis.tgz
+    docker save kubernetes/redis:v1 > $HOME/redis.tgz
 fi
 
 echo "------------------------------------------------------------------"
 echo " load / pull ubuntu:14.04"
 echo "------------------------------------------------------------------"
 
-#if [ -f $HOME/ubuntu.tgz ];then
-#    cd $HOME
-#    docker load < ubuntu.tgz
-#else
-#    docker pull ubuntu:14.04 
-#fi
+if [ -f $HOME/ubuntu.tgz ];then
+    cd $HOME
+    docker load < ubuntu.tgz
+else
+    docker pull ubuntu:14.04 
+    sleep 2
+    docker save ubuntu:14.04 > $HOME/ubuntu.tzg
+fi
 
 echo "------------------------------------------------------------------"
 echo " load / pull php:5.6-apache"
@@ -61,7 +63,7 @@ if [ -f $HOME/java.tgz ];then
 else
     docker pull java:8-jre
     sleep 2
-    docker save > $HOME/java.tgz
+    docker save java:8-jre > $HOME/java.tgz
 fi
 
 
