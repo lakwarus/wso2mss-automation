@@ -4,7 +4,7 @@ HOME="/vagrant"
 PET=$HOME/pet/docker
 FILESERVER=$HOME/fileserver/docker
 FRONTEND_ADMIN=$HOME/frontend_admin/petstore-admin-fe
-FRONTEND_USER=$HOME/frontend_user/docker
+FRONTEND_USER=$HOME/frontend_user/petstore-user-fe
 SECURITY=$HOME/security/docker
 TRANSACTION=$HOME/transaction/docker
 
@@ -36,7 +36,7 @@ if [ -f $HOME/ubuntu.tgz ];then
 else
     docker pull ubuntu:14.04 
     sleep 2
-    docker save ubuntu:14.04 > $HOME/ubuntu.tzg
+    docker save ubuntu:14.04 > $HOME/ubuntu.tgz
 fi
 
 echo "------------------------------------------------------------------"
