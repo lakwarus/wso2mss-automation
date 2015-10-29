@@ -27,6 +27,20 @@ else
 fi
 
 echo "------------------------------------------------------------------"
+echo " load / pull redis"
+echo "------------------------------------------------------------------"
+
+if [ -f $HOME/redis-org.tgz ];then
+    cd $HOME
+    docker load < redis-org.tgz
+else
+    docker pull redis
+    sleep 2
+    docker save redis > $HOME/redis-org.tgz
+fi
+
+
+echo "------------------------------------------------------------------"
 echo " load / pull ubuntu:14.04"
 echo "------------------------------------------------------------------"
 
