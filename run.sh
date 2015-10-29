@@ -55,26 +55,26 @@ echo "--------------------------------------------------------------"
 echo "Copy FrontEnd Admin"
 echo "--------------------------------------------------------------"
 cd $HOME
- get latest from git
-if [ ! -d petstore-admin-fe ];then
-   echo "--------------------------------------------------------------"
-   echo "Clone source code from https://github.com/lakwarus/petstore-admin-fe.git"
-   echo "--------------------------------------------------------------"
-   git clone https://github.com/lakwarus/petstore-admin-fe.git
-else
-    echo "-------------------------------------------------------------------"
-    echo "Fetching new updates from https://github.com/lakwarus/petstore-admin-fe.git"
-    echo "-------------------------------------------------------------------"
-    cd petstore-admin-fe
-    git pull
-fi
+# get latest from git
+#if [ ! -d petstore-admin-fe ];then
+#   echo "--------------------------------------------------------------"
+#   echo "Clone source code from https://github.com/lakwarus/petstore-admin-fe.git"
+#   echo "--------------------------------------------------------------"
+#   git clone https://github.com/lakwarus/petstore-admin-fe.git
+#else
+#    echo "-------------------------------------------------------------------"
+#    echo "Fetching new updates from https://github.com/lakwarus/petstore-admin-fe.git"
+#    echo "-------------------------------------------------------------------"
+#    cd petstore-admin-fe
+#    git pull
+#fi
 
-cp -fr petstore-admin-fe $SHARE_FOLDER/frontend_admin
+#cp -fr petstore-admin-fe $SHARE_FOLDER/frontend_admin
 
-#[ ! -d $SHARE_FOLDER/frontend_admin ] && mkdir -p $SHARE_FOLDER/frontend_admin
-#cp -fr $FRONTEND_ADMIN/container/docker $SHARE_FOLDER/frontend_admin
-#[ ! -d $SHARE_FOLDER/frontend_admin/docker/packages ] && mkdir -p $SHARE_FOLDER/frontend_admin/docker/packages
-#cp -f $FRONTEND_ADMIN/target/petstore-admin.war $SHARE_FOLDER/frontend_admin/docker/packages/
+[ ! -d $SHARE_FOLDER/frontend_admin ] && mkdir -p $SHARE_FOLDER/frontend_admin
+cp -fr $FRONTEND_ADMIN/container/docker $SHARE_FOLDER/frontend_admin
+[ ! -d $SHARE_FOLDER/frontend_admin/docker/packages ] && mkdir -p $SHARE_FOLDER/frontend_admin/docker/packages
+cp -f $FRONTEND_ADMIN/target/petstore-admin.war $SHARE_FOLDER/frontend_admin/docker/packages/
 
 
 echo "--------------------------------------------------------------"

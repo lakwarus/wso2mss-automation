@@ -3,7 +3,7 @@
 HOME="/vagrant"
 PET=$HOME/pet/docker
 FILESERVER=$HOME/fileserver/docker
-FRONTEND_ADMIN=$HOME/frontend_admin/
+FRONTEND_ADMIN=$HOME/frontend_admin/docker
 FRONTEND_USER=$HOME/frontend_user/docker
 SECURITY=$HOME/security/docker
 TRANSACTION=$HOME/transaction/docker
