@@ -53,7 +53,7 @@ kubectl create -f .
 echo "--------------------------------------------------------------"
 echo "Deploying FrontEnd Admin"
 echo "--------------------------------------------------------------"
-cd $FRONTEND_ADMIN/container/kubernetes/
+cd $HOME/petstore-admin-fe/kubernetes/
 kubectl create -f .
 
 echo "--------------------------------------------------------------"
